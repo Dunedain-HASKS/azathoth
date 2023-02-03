@@ -1,8 +1,10 @@
 // /auth/login
-// /auth/create
-// /auth/
+// /auth/logout
+
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
-// /auth/login using email and password
+
+module.exports = router;
