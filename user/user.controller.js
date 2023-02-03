@@ -1,17 +1,16 @@
-//get user using auth_token i.e. req.user (will be done by passport middleware)
+//get user using auth_token i.e. req.body (will be done by passport middleware)
 // /create
 // /update
 // /delete
 // /schemes
 // /transactions
 // 
-import User from './user.schema'
-const router = require('express').Router()
-
-
-router.get("/user", async (req, res) => {
+const router = require('express').Router();
+const User = require('./user.schema')
+const bcrypt = require('bcrypt')
+router.get("/", async (req, res) => {
     try {
-        const user = await User.findById(req.user)
+        const user = await User.findById(req.body.id)
         if (user) {
             res.json({
                 status: 200,
@@ -25,7 +24,7 @@ router.get("/user", async (req, res) => {
                 data: {}
             })
         }
-    } catch(err) {
+    } catch (err) {
         res.json({
             status: 401,
             message: err,
@@ -34,9 +33,15 @@ router.get("/user", async (req, res) => {
     }
 })
 
-router.post("/user", async (req, res) => {
+router.post("/", async (req, res) => {
+
     try {
-        const user = await User.findById(req.user)
+        const newuser = req.body;
+        newuser.portfolio = []
+        newuser.net_worth = []
+        newuser.active_schemes = []
+        newuser.transactions = []
+        const user = await User.findOne({ email: req.body.email })
         if (user) {
             return res.json({
                 status: 401,
@@ -46,20 +51,18 @@ router.post("/user", async (req, res) => {
         }
 
         const salt = await bcrypt.genSalt()
-        const hashedPassword = await bcrypt.hash(req.user.password, salt);
-        const data = { ...req.user, password: hashedPassword };
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const data = { ...req.body, password: hashedPassword };
 
-        User.save(data, (err, collection) => {
-            if (err) {
-                throw err;
-            }
-        });
+        const userSave = new User(data);
+        await userSave.save();
+
         res.json({
             status: 200,
             message: '',
             data: data
         })
-    } catch(err) {
+    } catch (err) {
         res.json({
             status: 401,
             message: err,
@@ -68,4 +71,56 @@ router.post("/user", async (req, res) => {
     }
 })
 
-module.exports = router
+router.delete("/", (req, res) => {
+    try {
+        User.deleteOne({ _id: req.body.id }, (err) => {
+            if (err) {
+                res.json({
+                    status: 401,
+                    message: err,
+                    data: {}
+                })
+            } else {
+                res.json({
+                    status: 200,
+                    message: 'Deleted successfully',
+                    data: {}
+                })
+            }
+        })
+    } catch (err) {
+        res.json({
+            status: 401,
+            message: err,
+            data: {}
+        })
+    }
+})
+
+router.put("/", (req, res) => {
+    try {
+        User.findByIdAndUpdate(req.body.id, req.body, (err) => {
+            if (err) {
+                res.json({
+                    status: 401,
+                    message: err,
+                    data: {}
+                })
+            } else {
+                res.json({
+                    status: 200,
+                    message: 'Updated successfully',
+                    data: {}
+                })
+            }
+        })
+    } catch (err) {
+        res.json({
+            status: 401,
+            message: err,
+            data: {}
+        })
+    }
+})
+
+module.exports = router;
