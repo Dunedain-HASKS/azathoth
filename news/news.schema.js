@@ -10,4 +10,4 @@ const NewsSchema = new Schema({
 });
 
 
-module.exports = mangoose.model("News", NewsSchema);
+module.exports = mongoose.model("News", NewsSchema);

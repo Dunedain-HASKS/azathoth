@@ -7,4 +7,4 @@ const TransactionSchema = new Schema({
      time: Date
 });
 
-module.exports = mangoose.model("Transaction", TransactionSchema);
+module.exports = mongoose.model("Transaction", TransactionSchema);

@@ -61,4 +61,4 @@ const UserSchema = new Schema({
      }
 });
 
-module.exports = mangoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);
