@@ -12,6 +12,7 @@ const CompanySchema = new Schema({
           type: String,
           required: true
      },
+     marketcap: Number,
      sector: String,
      subsector: String,
      description: String,
@@ -58,4 +59,4 @@ const CompanySchema = new Schema({
      }
 });
 
-module.exports = mangoose.model("Company", CompanySchema);
+module.exports = mongoose.model("Company", CompanySchema);
