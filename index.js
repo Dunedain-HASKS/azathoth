@@ -6,15 +6,16 @@ const logger = require('morgan');
 const root = require('./main.controller');
 const mongoose = require('mongoose');
 const app = express();
-
+const passport = require('passport');
 const env = require('dotenv').config();
 
 if (process.env.MONGO_URI === undefined) {
      console.log("MONGO_URI not found");
      process.exit(1);
 }
+
 mongoose.set('strictQuery', true);
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true,  });
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, });
 mongoose.connection.on('error', (err) => {
      console.log("MONGO ERROR: " + err);
      process.exit(1);
@@ -24,6 +25,7 @@ mongoose.connection.on('connected', () => {
      console.log("MONGO CONNECTED");
 });
 // view engine setup
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -33,12 +35,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/', root);
-
+app.use('/test', (req, res) => {
+     eval().then((data) => {
+          res.json(data);
+     });
+}
+);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-     next(createError(404));
+     console.log("404", req.url);
 });
 
 // error handler
