@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -6,9 +5,8 @@ const logger = require('morgan');
 const root = require('./main.controller');
 const mongoose = require('mongoose');
 const app = express();
-const passport = require('passport');
 const env = require('dotenv').config();
-
+const { eval } = require('./src/main.loop'); 
 if (process.env.MONGO_URI === undefined) {
      console.log("MONGO_URI not found");
      process.exit(1);
@@ -42,18 +40,15 @@ app.use('/test', (req, res) => {
      });
 }
 );
-// catch 404 and forward to error handler
+
 app.use(function (req, res, next) {
      console.log("404", req.url);
 });
 
-// error handler
 app.use(function (err, req, res, next) {
-     // set locals, only providing error in development
      res.locals.message = err.message;
      res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-     // render the error page
+     console.log(err);
      res.status(err.status || 500);
      res.render('error');
 });
