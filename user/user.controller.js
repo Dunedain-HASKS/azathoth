@@ -11,7 +11,7 @@ const router = require('express').Router()
 
 router.get("/user", async (req, res) => {
     try {
-        const user = await User.find({ email: req.user.email })
+        const user = await User.findById(req.user)
         if (user) {
             res.json({
                 status: 200,
@@ -36,7 +36,7 @@ router.get("/user", async (req, res) => {
 
 router.post("/user", async (req, res) => {
     try {
-        const user = await User.findOne({ email: req.user.email })
+        const user = await User.findById(req.user)
         if (user) {
             return res.json({
                 status: 401,
