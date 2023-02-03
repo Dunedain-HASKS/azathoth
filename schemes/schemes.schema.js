@@ -1,3 +1,7 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+
 const SchemeSchema = new Schema({
      name: {
           type: String,
@@ -29,7 +33,7 @@ const SchemeSchema = new Schema({
                minutes: Number
           }
      },
-     
+
 });
 // {
 //           "name": "//investment schemes to auto buy and sell when total price gets lower or higher then a certain value",
@@ -49,4 +53,4 @@ const SchemeSchema = new Schema({
 //           "lower_short": "sell when gets lower then value",
 //           "upper_short": "sell when gets higher then value"
 //      }
-module.exports = mangoose.model("Transaction", SchemeSchema);
+module.exports = mongoose.model("Transaction", SchemeSchema);

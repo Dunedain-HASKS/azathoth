@@ -1,8 +1,8 @@
 const passport = require('passport');
-
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const User = require('../user/user.schema');
+const LocalStrategy = require('passport-local').Strategy;
 
 const opts = {
      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -11,18 +11,24 @@ const opts = {
      audience: 'Azathoth'
 };
 
-passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-     User.findOne({ id: jwt_payload.sub }, function (err, user) {
-          if (err) {
-               return done(err, false);
-          }
-          if (user) {
-               return done(null, user);
-          } else {
-               return done(null, false);
-          }
-     });
-}));
+passport.use(new PassportJwt.Strategy(jwtOptions,
+     (jwtPayload, done) => {
+          console.log('PassportJwt Strategy being processed');
+          User.findById(jwtPayload.sub)
+               .then((user) => {
+                    if (user) {
+                         done(null, user);
+                    } else {
+                         done(null, false);
+                    }
+               })
+               .catch((error) => {
+                    done(error, false);
+               });
+     }
+));
 
+
+//await bcrypt.compare(password, user.password);
 
 
