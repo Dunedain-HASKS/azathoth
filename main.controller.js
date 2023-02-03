@@ -3,8 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const userRouter = require('./user/user.controller');
+const companiesRouter = require('./companies/companies.controller');
     
 router.use('/user',userRouter);
+router.use('/companies', companiesRouter);
 
 
 

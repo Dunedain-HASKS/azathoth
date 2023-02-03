@@ -1,5 +1,4 @@
 const mangoose = require("mongoose");
-const { map } = require("..");
 const Schema = mangoose.Schema;
 
 const UserSchema = new Schema({

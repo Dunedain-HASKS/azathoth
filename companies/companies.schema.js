@@ -1,3 +1,7 @@
+const mangoose = require("mongoose");
+const Schema = mangoose.Schema;
+
+
 const CompanySchema = new Schema({
      name: {
           type: String,
