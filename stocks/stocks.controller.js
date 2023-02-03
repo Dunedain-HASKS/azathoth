@@ -1,12 +1,9 @@
-// /stocks - GET
-// /stocks/:id - GET
-
 const express = require('express');
 const router = express.Router();
 const Stock = require('./stocks.schema');
 
-router.get('/', (req, res) => {
-     Stock.find()
+router.get("/", async (req, res) => {
+     await Stock.find({})
           .then((stocks) => {
                res.json({
                     status: 200,
@@ -15,11 +12,15 @@ router.get('/', (req, res) => {
                });
           })
           .catch((error) => {
-               res.status(500).json(error);
+               res.json({
+                    status: 404,
+                    message: 'Stocks not found',
+                    data: error.message
+               });
           });
 });
 
-router.get('/:id', (req, res) => {
+router.get("/:id", async (req, res) => {
      Stock.findById(req.params.id)
           .then((stock) => {
                res.json({
@@ -29,7 +30,11 @@ router.get('/:id', (req, res) => {
                });
           })
           .catch((error) => {
-               res.status(500).json(error);
+               res.json({
+                    status: 404,
+                    message: 'Stocks not found',
+                    data: error.message
+               });
           });
 });
 
