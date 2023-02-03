@@ -9,7 +9,8 @@ const UserSchema = new Schema({
      },
      email: {
           type: String,
-          required: true
+          required: true,
+          unique: true
      },
      password: {
           type: String,
@@ -19,7 +20,6 @@ const UserSchema = new Schema({
           type: [{
                type: Map,
                of: {
-                    //stock id and amount
                     stock: {
                          type: Schema.Types.ObjectId,
                          ref: "Stock"
