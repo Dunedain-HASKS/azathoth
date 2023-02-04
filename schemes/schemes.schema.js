@@ -33,24 +33,9 @@ const SchemeSchema = new Schema({
                minutes: Number
           }
      },
-
+     lower_limit: Number,
+     upper_limit: Number,
 });
-// {
-//           "name": "//investment schemes to auto buy and sell when total price gets lower or higher then a certain value",
-//           "stocks": [
-//                {
-//                     "id": "#stockid",
-//                     "amount": 0
-//                }
-//           ],
-//           "add_percent": 0,
-//           "interval": {
-//                "hours": 0,
-//                "minutes": 0
-//           },
-//           "initial_value": 0,
-//           "last evaluation": "//last evaluation time",
-//           "lower_short": "sell when gets lower then value",
-//           "upper_short": "sell when gets higher then value"
-//      }
+
+
 module.exports = mongoose.model("Transaction", SchemeSchema);

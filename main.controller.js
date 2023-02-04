@@ -7,7 +7,7 @@ const companiesRouter = require('./companies/companies.controller');
 const stocksRouter = require('./stocks/stocks.controller');
 const newsRouter = require('./news/news.controller')
 const transactionsRouter = require('./transactions/transactions.controller')
-
+const mainloop = require('./src/main.loop');
 const bcrypt = require('bcrypt');
 const User = require('./user/user.schema');
 router.use('/user', userRouter);
@@ -45,3 +45,6 @@ router.post('/auth', async (req, res) => {
      }
 });
 
+router.post('/evaluate', async (req, res) => {
+     mainloop.evaluate();
+});

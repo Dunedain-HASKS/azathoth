@@ -34,7 +34,13 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
-    console.log(req.params.id)
+    if (!mongoose.isValidObjectId(req.params.id)) {
+        return res.json({
+            status: 404,
+            message: 'Invalid stock id',
+            data: {}
+        });
+    }
     try {
         const company = await Company.findById(req.params.id)
         if (company) {
@@ -60,6 +66,13 @@ router.get("/:id", async (req, res) => {
 })
 
 router.get("/:id/news", async (req, res) => {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+        return res.json({
+            status: 404,
+            message: 'Invalid stock id',
+            data: {}
+        });
+    }
     try {
         const { id } = req.params
         const currentCompany = await Company.findById(id)
