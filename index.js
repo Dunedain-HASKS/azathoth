@@ -5,12 +5,17 @@ const logger = require('morgan');
 const root = require('./main.controller');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors');
 const env = require('dotenv').config();
 const { eval } = require('./src/main.loop'); 
 if (process.env.MONGO_URI === undefined) {
      console.log("MONGO_URI not found");
      process.exit(1);
 }
+
+//enable cors
+
+app.user(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
