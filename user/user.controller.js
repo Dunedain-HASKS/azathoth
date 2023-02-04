@@ -133,9 +133,9 @@ router.put("/", (req, res) => {
     }
 });
 
-router.get("/transactions", async (req, res) => {
+router.get("/:id/transactions", async (req, res) => {
     try {
-        const user = await User.findById(req.body.id).exec().populate('transactions');
+        const user = await User.findById(req.params.id).exec().populate('transactions');
         if (user) {
             res.json({
                 status: 200,
@@ -158,9 +158,9 @@ router.get("/transactions", async (req, res) => {
     }
 });
 
-router.get("/portfolio", async (req, res) => {
+router.get("/:id/portfolio", async (req, res) => {
     try {
-        const user = await User.findById(req.body.id).exec().populate('portfolio');
+        const user = await User.findById(req.params.id).exec().populate('portfolio');
         if (user) {
             res.json({
                 status: 200,

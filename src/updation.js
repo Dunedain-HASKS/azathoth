@@ -44,9 +44,6 @@ const updateStockPrice = async () => {
           });
           Stock.findByIdAndUpdate(stock._id, { $set: { historic_data: stock.historic_data } }, { new: true }).exec();
      });
-
-
-     
 }
 
 module.exports = {
