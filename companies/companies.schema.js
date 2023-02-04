@@ -24,39 +24,13 @@ const CompanySchema = new Schema({
           type: Schema.Types.ObjectId,
           ref: "News"
      }],
-     financials: {
+     financials: [{
           type: Map,
           of: {
-               basic: {
-                    type: Map,
-                    of: {
-                         annual: {
-                              type: Map,
-                              of: {
-                                   currentRatio: [{
-                                        period: Date,
-                                        v: Number
-                                   }],
-                                   salesPerShare: [{
-                                        period: Date,
-                                        v: Number
-                                   }],
-                                   netMargin: [{
-                                        period: Date,
-                                        v: Number
-                                   }],
-                              }
-                         }
-                    }
-               },
-               report: [{
-                    concept: String,
-                    unit: String,
-                    label: String,
-                    value: Number
-               }]
+               key: String,
+               value: String
           }
-     }
+     }]
 });
 
 module.exports = mongoose.model("Company", CompanySchema);

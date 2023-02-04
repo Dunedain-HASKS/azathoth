@@ -78,7 +78,6 @@ router.post("/:id/buy", async (req, res) => {
      }
 
      const stockIndex = portfolio.findIndex((pair) => {
-          console.log(pair.get('stock'), stockId);
           return String(pair.get('stock')) == String(stockId);
      });
 
@@ -123,7 +122,6 @@ router.post("/:id/sell", async (req, res) => {
      const portfolio = user.portfolio;
 
      const stockIndex = portfolio.findIndex((pair) => {
-          console.log(pair.get('stock'), stockId);
           return String(pair.get('stock')) == String(stockId);
      });
 

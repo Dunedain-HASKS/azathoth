@@ -5,6 +5,7 @@
 // /schemes
 // /transactions
 // 
+const Stock = require('../stocks/stocks.schema');
 const router = require('express').Router();
 const User = require('./user.schema')
 const bcrypt = require('bcrypt')
@@ -31,7 +32,6 @@ router.get("/:id", async (req, res) => {
             })
         }
     } catch (err) {
-        console.log(err);
         res.json({
             status: 401,
             message: err,
@@ -136,12 +136,18 @@ router.put("/", (req, res) => {
 router.get("/:id/transactions", async (req, res) => {
     try {
         const user = await User.findById(req.params.id).populate('transactions').exec();
-        console.log(user);
         if (user) {
+            const transactions = await Promise.all(user.transactions.map(async (transaction) => (
+                {
+                    "_id": transaction._id,
+                    "stock": await Stock.findById(transaction.stock),
+                    "amount": transaction.amount,
+                }
+            )));
             res.json({
                 status: 200,
-                message: '',
-                data: user.transactions
+                message: 'Transactions fetched successfully',
+                data: transactions
             })
         } else {
             res.json({
