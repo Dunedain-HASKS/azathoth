@@ -2,6 +2,11 @@
 // /companies/:id
 const router = require('express').Router()
 const Company = require('./companies.schema')
+const News = require('../news/news.schema')
+
+const func = () => {
+    console.log(News.find({}))
+}
 
 router.get("/", async (req, res) => {
     try {
@@ -56,7 +61,11 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/news", async (req, res) => {
     try {
-        const company = await Company.findById(req.params.id).populate('news');
+        const { id } = req.params
+        const currentCompany = await Company.findById(id)
+
+        const response = await fetch(`https://finnhub.io/api/v1/company-news?symbol=${currentCompany.ticker}&from=2013-09-01&to=2023-09-09&token=cfenj61r01qoicaf7a0gcfenj61r01qoicaf7a10`)
+        Company.findByIdAndUpdate(id, {$push: {news: response.json()}})
         if (company) {
             res.json({
                 status: 200,

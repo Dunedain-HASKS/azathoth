@@ -15,7 +15,7 @@ if (process.env.MONGO_URI === undefined) {
 
 //enable cors
 
-app.user(cors());
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
