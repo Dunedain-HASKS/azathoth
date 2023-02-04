@@ -56,7 +56,20 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/news", async (req, res) => {
     try {
-        res.send('hello')
+        const company = await Company.findById(req.params.id).populate('news');
+        if (company) {
+            res.json({
+                status: 200,
+                message: 'Company found',
+                data: company.news
+            })
+        } else {
+            res.json({
+                status: 401,
+                message: 'Company not found',
+                data: {}
+            })
+        }
     } catch (err) {
         res.json({
             status: 401,
@@ -64,6 +77,6 @@ router.get("/:id/news", async (req, res) => {
             data: {}
         })
     }
-})
+});
 
 module.exports = router
