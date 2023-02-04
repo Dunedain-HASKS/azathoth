@@ -4,10 +4,6 @@ const router = require('express').Router()
 const Company = require('./companies.schema')
 const News = require('../news/news.schema')
 
-const func = () => {
-    console.log(News.find({}))
-}
-
 router.get("/", async (req, res) => {
     try {
         const companies = await Company.find({})
@@ -75,7 +71,7 @@ router.get("/:id/news", async (req, res) => {
     }
     try {
         const { id } = req.params
-        const company = await Company.findById(id)
+        const company = await Company.findById(id).populate('news').exec()
         if (company) {
             res.json({
                 status: 200,
