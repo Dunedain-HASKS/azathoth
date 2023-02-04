@@ -13,12 +13,12 @@ router.get("/:id", async (req, res) => {
     try {
         const user = await User.findById(req.params.id).exec();
         const portfolio = user.portfolio;
-        var holdings = 0;
-        portfolio.forEach((pair) => {
-            holdings += pair.get('amount');
-        });
+        const holdings = portfolio.reduce((acc, stock) => {
+            return acc + stock.get('amount');
+        }, 0);
         if (user) {
-            const funds = user.net_worth[user.net_worth.length - 1].get('value') - holdings;
+            const currentNetWorth = user.net_worth[user.net_worth.length - 1].get('value');
+            const funds = currentNetWorth - holdings;
             res.json({
                 status: 200,
                 message: '',
