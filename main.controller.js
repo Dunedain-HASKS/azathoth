@@ -48,5 +48,6 @@ router.post('/auth', async (req, res) => {
 });
 
 router.post('/evaluate', async (req, res) => {
+     console.log('evaluate');
      mainloop.evaluate();
 });
