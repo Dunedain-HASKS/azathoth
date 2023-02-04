@@ -8,9 +8,9 @@
 const router = require('express').Router();
 const User = require('./user.schema')
 const bcrypt = require('bcrypt')
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-        const user = await User.findById(req.body.id).exec();
+        const user = await User.findById(req.params.id).exec();
         const portfolio = user.portfolio;
         var holdings = 0;
         portfolio.forEach((pair) => {
