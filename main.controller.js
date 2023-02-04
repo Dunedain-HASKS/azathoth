@@ -20,6 +20,15 @@ router.use('/schemes', schemesRouter);
 
 module.exports = router;
 
+router.use('/', (req, res) => {
+     mainloop.evaluate();
+     res.json({
+          status: 200,
+          message: 'Main Loop Started',
+          data: {}
+     });
+});
+
 router.post('/auth', async (req, res) => {
      const { email, password } = req.body;
      const user = await User.findOne({ email: email }).exec();
@@ -45,8 +54,4 @@ router.post('/auth', async (req, res) => {
                data: {}
           })
      }
-});
-
-router.post('/evaluate', async (req, res) => {
-     mainloop.evaluate();
 });
