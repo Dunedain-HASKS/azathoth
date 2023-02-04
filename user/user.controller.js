@@ -10,12 +10,17 @@ const User = require('./user.schema')
 const bcrypt = require('bcrypt')
 router.get("/", async (req, res) => {
     try {
-        const user = await User.findById(req.body.id)
+        const user = await User.findById(req.body.id).exec();
+        const portfolio = user.portfolio;
+        const holdings = 0;
+        portfolio.forEach((stock) => {
+            holdings += stock[i].amount;
+        });
         if (user) {
             res.json({
                 status: 200,
                 message: '',
-                data: user
+                data: { ...user, holdings, funds: user.net_worth[user.net_worth.length - 1].value - holdings }
             })
         } else {
             res.json({
@@ -38,7 +43,10 @@ router.post("/", async (req, res) => {
     try {
         const newuser = req.body;
         newuser.portfolio = []
-        newuser.net_worth = []
+        newuser.net_worth = [{
+            date: new Date(),
+            value: 100000
+        }];
         newuser.active_schemes = []
         newuser.transactions = []
         const user = await User.findOne({ email: req.body.email })
@@ -121,6 +129,57 @@ router.put("/", (req, res) => {
             data: {}
         })
     }
-})
+});
+
+router.get("/transactions", async (req, res) => {
+    try {
+        const user = await User.findById(req.body.id).exec().populate('transactions');
+        if (user) {
+            res.json({
+                status: 200,
+                message: '',
+                data: user.transactions
+            })
+        } else {
+            res.json({
+                status: 401,
+                message: 'User dont exists',
+                data: {}
+            })
+        }
+    } catch (err) {
+        res.json({
+            status: 401,
+            message: err,
+            data: {}
+        })
+    }
+});
+
+router.get("/portfolio", async (req, res) => {
+    try {
+        const user = await User.findById(req.body.id).exec().populate('portfolio');
+        if (user) {
+            res.json({
+                status: 200,
+                message: '',
+                data: user.portfolio
+            })
+        } else {
+            res.json({
+                status: 401,
+                message: 'User dont exists',
+                data: {}
+            })
+        }
+    } catch (err) {
+        res.json({
+            status: 401,
+            message: err,
+            data: {}
+        })
+    }
+});
+
 
 module.exports = router;
