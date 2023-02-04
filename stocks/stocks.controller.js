@@ -64,11 +64,12 @@ router.post("/:id/buy", async (req, res) => {
      const stockId = stock._id;
      const amount = req.body.amount;
      const user = await User.findById(req.body.id).exec();
-     const currentNetWorth = user.net_worth[user.net_worth.length - 1].value;
+     const currentNetWorth = user.net_worth[user.net_worth.length - 1].get('value');
      const portfolio = user.portfolio;
      const holdings = portfolio.reduce((acc, stock) => {
-          return acc + stock.amount;
+          return acc + stock.get('amount');
      }, 0);
+     console.log(currentNetWorth, holdings, amount);
      if (amount > currentNetWorth - holdings) {
           return res.json({
                status: 401,
@@ -78,7 +79,6 @@ router.post("/:id/buy", async (req, res) => {
      }
 
      const stockIndex = portfolio.findIndex((pair) => {
-          console.log(pair.get('stock'), stockId);
           return String(pair.get('stock')) == String(stockId);
      });
 
@@ -115,7 +115,6 @@ router.post("/:id/sell", async (req, res) => {
                data: {}
           });
      }
-
      const stock = await Stock.findById(id).exec();
      const stockId = stock._id;
      const amount = req.body.amount;
@@ -123,7 +122,6 @@ router.post("/:id/sell", async (req, res) => {
      const portfolio = user.portfolio;
 
      const stockIndex = portfolio.findIndex((pair) => {
-          console.log(pair.get('stock'), stockId);
           return String(pair.get('stock')) == String(stockId);
      });
 

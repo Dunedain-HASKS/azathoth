@@ -5,19 +5,20 @@
 // /schemes
 // /transactions
 // 
+const Stock = require('../stocks/stocks.schema');
 const router = require('express').Router();
 const User = require('./user.schema')
 const bcrypt = require('bcrypt')
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-        const user = await User.findById(req.body.id).exec();
+        const user = await User.findById(req.params.id).exec();
         const portfolio = user.portfolio;
-        var holdings = 0;
-        portfolio.forEach((pair) => {
-            holdings += pair.get('amount');
-        });
+        const holdings = portfolio.reduce((acc, stock) => {
+            return acc + stock.get('amount');
+        }, 0);
         if (user) {
-            const funds = user.net_worth[user.net_worth.length - 1].get('value') - holdings;
+            const currentNetWorth = user.net_worth[user.net_worth.length - 1].get('value');
+            const funds = currentNetWorth - holdings;
             res.json({
                 status: 200,
                 message: '',
@@ -31,7 +32,6 @@ router.get("/", async (req, res) => {
             })
         }
     } catch (err) {
-        console.log(err);
         res.json({
             status: 401,
             message: err,
@@ -133,14 +133,22 @@ router.put("/", (req, res) => {
     }
 });
 
-router.get("/transactions", async (req, res) => {
+router.get("/:id/transactions", async (req, res) => {
     try {
-        const user = await User.findById(req.body.id).exec().populate('transactions');
+        const user = await User.findById(req.params.id).populate('transactions').exec();
         if (user) {
+            const transactions = await Promise.all(user.transactions.map(async (transaction) => (
+                {
+                    "_id": transaction._id,
+                    "stock": await Stock.findById(transaction.stock),
+                    "amount": transaction.amount,
+                }
+            )));
+            console.log(transactions)
             res.json({
                 status: 200,
-                message: '',
-                data: user.transactions
+                message: 'Transactions fetched successfully',
+                data: transactions
             })
         } else {
             res.json({
@@ -150,6 +158,7 @@ router.get("/transactions", async (req, res) => {
             })
         }
     } catch (err) {
+        console.log(err);
         res.json({
             status: 401,
             message: err,
@@ -158,14 +167,20 @@ router.get("/transactions", async (req, res) => {
     }
 });
 
-router.get("/portfolio", async (req, res) => {
+router.get("/:id/portfolio", async (req, res) => {
     try {
-        const user = await User.findById(req.body.id).exec().populate('portfolio');
+        const user = await User.findById(req.params.id).populate('portfolio').exec();
         if (user) {
+            const portfolio = await Promise.all(user.portfolio.map(async (batch) => (
+                {
+                    "stock": await Stock.findById(batch.get('stock')),
+                    "amount": batch.get('amount'),
+                }
+            )));
             res.json({
                 status: 200,
                 message: '',
-                data: user.portfolio
+                data: portfolio
             })
         } else {
             res.json({

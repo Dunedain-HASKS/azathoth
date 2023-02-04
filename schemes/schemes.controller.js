@@ -89,16 +89,11 @@ router.post("/:id/sell", async (req, res) => {
     const { id } = req.params;
     const scheme = await Schemes.findById(id).exec();
 
-    scheme.stocks.map((stock) => {
-        User.findByIdAndUpdate(req.body.id, {})
-    })
-
     const schemeId = scheme.stocks._id;
     const amount = req.body.amount;
     const portfolio = user.portfolio;
 
     const stockIndex = portfolio.findIndex((pair) => {
-        console.log(pair.get('stock'), schemeId);
         return String(pair.get('stock')) == String(schemeId);
     });
 
