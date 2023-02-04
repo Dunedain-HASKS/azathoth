@@ -135,7 +135,8 @@ router.put("/", (req, res) => {
 
 router.get("/:id/transactions", async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).exec().populate('transactions');
+        const user = await User.findById(req.params.id).populate('transactions').exec();
+        console.log(user);
         if (user) {
             res.json({
                 status: 200,
@@ -150,6 +151,7 @@ router.get("/:id/transactions", async (req, res) => {
             })
         }
     } catch (err) {
+        console.log(err);
         res.json({
             status: 401,
             message: err,
@@ -160,7 +162,7 @@ router.get("/:id/transactions", async (req, res) => {
 
 router.get("/:id/portfolio", async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).exec().populate('portfolio');
+        const user = await User.findById(req.params.id).populate('portfolio').exec();
         if (user) {
             res.json({
                 status: 200,
