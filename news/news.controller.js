@@ -8,11 +8,15 @@ const data = []
 router.get('/', async (req, res) => {
     try {
         const news = await News.find({}).exec();
-        if (news) {
+        const randNews = []
+        for (let i = 0; i < 100; i++) {
+            randNews.push(news[Math.floor(Math.random()*5049 + 1)])
+        }
+        if (randNews.length) {
             res.json({
                 status: 200,
                 message: 'News found',
-                data: news
+                data: randNews
             })
         } else {
             res.json({
