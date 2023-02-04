@@ -62,20 +62,17 @@ router.get("/:id", async (req, res) => {
 router.get("/:id/news", async (req, res) => {
     try {
         const { id } = req.params
-        const currentCompany = await Company.findById(id)
-
-        const response = await fetch(`https://finnhub.io/api/v1/company-news?symbol=${currentCompany.ticker}&from=2013-09-01&to=2023-09-09&token=cfenj61r01qoicaf7a0gcfenj61r01qoicaf7a10`)
-        Company.findByIdAndUpdate(id, {$push: {news: response.json()}})
+        const company = await Company.findById(id)
         if (company) {
             res.json({
                 status: 200,
-                message: 'Company found',
+                message: 'Company News found',
                 data: company.news
             })
         } else {
             res.json({
                 status: 401,
-                message: 'Company not found',
+                message: 'Company News not found',
                 data: {}
             })
         }

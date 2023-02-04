@@ -5,8 +5,9 @@ const router = express.Router();
 const userRouter = require('./user/user.controller');
 const companiesRouter = require('./companies/companies.controller');
 const stocksRouter = require('./stocks/stocks.controller');
-const newsRouter = require('./news/news.controller')
-const transactionsRouter = require('./transactions/transactions.controller')
+const newsRouter = require('./news/news.controller');
+const transactionsRouter = require('./transactions/transactions.controller');
+const schemesRouter = require('./schemes/schemes.controller');
 
 const bcrypt = require('bcrypt');
 const User = require('./user/user.schema');
@@ -15,6 +16,7 @@ router.use('/companies', companiesRouter);
 router.use('/stocks', stocksRouter);
 router.use('/news', newsRouter);
 router.use('/transactions', transactionsRouter);
+router.use('/schemes', schemesRouter);
 
 module.exports = router;
 

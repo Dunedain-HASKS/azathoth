@@ -5,15 +5,6 @@ const router = require('express').Router()
 const News = require('./news.schema')
 const data = []
 
-// async function getData() {
-//     const url = 'https://finnhub.io/api/v1/company-news?symbol=AAPL&from=2013-09-01&to=2023-09-09&token=cfenj61r01qoicaf7a0gcfenj61r01qoicaf7a10';
-//     const response = await fetch(url);
-//     const jsonResponse = await response.json();
-//     News.create(jsonResponse)
-//   } 
-  
-//   getData();
-
 router.get('/', async (req, res) => {
     try {
         const news = await News.find({})
@@ -21,7 +12,7 @@ router.get('/', async (req, res) => {
             res.json({
                 status: 200,
                 message: 'News found',
-                data: companies
+                data: news
             })
         } else {
             res.json({

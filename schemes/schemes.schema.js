@@ -53,4 +53,4 @@ const SchemeSchema = new Schema({
 //           "lower_short": "sell when gets lower then value",
 //           "upper_short": "sell when gets higher then value"
 //      }
-module.exports = mongoose.model("Transaction", SchemeSchema);
+module.exports = mongoose.model("Schemes", SchemeSchema);
