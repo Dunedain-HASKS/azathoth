@@ -144,6 +144,7 @@ router.get("/:id/transactions", async (req, res) => {
                     "amount": transaction.amount,
                 }
             )));
+            console.log(transactions)
             res.json({
                 status: 200,
                 message: 'Transactions fetched successfully',
@@ -170,10 +171,16 @@ router.get("/:id/portfolio", async (req, res) => {
     try {
         const user = await User.findById(req.params.id).populate('portfolio').exec();
         if (user) {
+            const portfolio = await Promise.all(user.portfolio.map(async (batch) => (
+                {
+                    "stock": await Stock.findById(batch.get('stock')),
+                    "amount": batch.get('amount'),
+                }
+            )));
             res.json({
                 status: 200,
                 message: '',
-                data: user.portfolio
+                data: portfolio
             })
         } else {
             res.json({
