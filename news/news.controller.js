@@ -7,7 +7,7 @@ const data = []
 
 router.get('/', async (req, res) => {
     try {
-        const news = await News.find({})
+        const news = await News.find({}).exec();
         if (news) {
             res.json({
                 status: 200,
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
             })
         } else {
             res.json({
-                status: 401,
+                status: 404,
                 message: 'News not found',
                 data: {}
             })
