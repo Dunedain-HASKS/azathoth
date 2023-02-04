@@ -4,7 +4,7 @@ const Stock = require('./stocks.schema');
 const User = require('../user/user.schema');
 const Transaction = require('../transactions/transactions.schema');
 router.get("/", async (req, res) => {
-     await Stock.find({})
+     await Stock.find({}).populate('company')
           .then((stocks) => {
                res.json({
                     status: 200,
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-     Stock.findById(req.params.id)
+     Stock.findById(req.params.id).populate('company')
           .then((stock) => {
                res.json({
                     status: 200,
