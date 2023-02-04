@@ -12,15 +12,16 @@ router.get("/", async (req, res) => {
     try {
         const user = await User.findById(req.body.id).exec();
         const portfolio = user.portfolio;
-        const holdings = 0;
-        portfolio.forEach((stock) => {
-            holdings += stock[i].amount;
+        var holdings = 0;
+        portfolio.forEach((pair) => {
+            holdings += pair.get('amount');
         });
         if (user) {
+            const funds = user.net_worth[user.net_worth.length - 1].get('value') - holdings;
             res.json({
                 status: 200,
                 message: '',
-                data: { ...user, holdings, funds: user.net_worth[user.net_worth.length - 1].value - holdings }
+                data: { ...(user._doc) , holdings, funds }
             })
         } else {
             res.json({
@@ -30,6 +31,7 @@ router.get("/", async (req, res) => {
             })
         }
     } catch (err) {
+        console.log(err);
         res.json({
             status: 401,
             message: err,
