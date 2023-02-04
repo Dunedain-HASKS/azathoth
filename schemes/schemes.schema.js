@@ -33,7 +33,8 @@ const SchemeSchema = new Schema({
                minutes: Number
           }
      },
-
+     lower_limit: Number,
+     upper_limit: Number,
 });
 // {
 //           "name": "//investment schemes to auto buy and sell when total price gets lower or higher then a certain value",

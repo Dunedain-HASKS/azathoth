@@ -3,6 +3,8 @@ const router = express.Router();
 const Stock = require('./stocks.schema');
 const User = require('../user/user.schema');
 const Transaction = require('../transactions/transactions.schema');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 router.get("/", async (req, res) => {
      await Stock.find({}).populate('company')
           .then((stocks) => {
@@ -22,6 +24,13 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+     if (!mongoose.isValidObjectId(id)) {
+          return res.json({
+               status: 404,
+               message: 'Invalid stock id',
+               data: {}
+          });
+     }
      Stock.findById(req.params.id).populate('company')
           .then((stock) => {
                res.json({
@@ -43,6 +52,14 @@ router.get("/:id", async (req, res) => {
 
 router.post("/:id/buy", async (req, res) => {
      const { id } = req.params;
+     //check if id is valid
+     if (!mongoose.isValidObjectId(id)) {
+          return res.json({
+               status: 404,
+               message: 'Invalid stock id',
+               data: {}
+          });
+     }
      const stock = await Stock.findById(id).exec();
      const stockId = stock._id;
      const amount = req.body.amount;
@@ -91,6 +108,14 @@ router.post("/:id/buy", async (req, res) => {
 
 router.post("/:id/sell", async (req, res) => {
      const { id } = req.params;
+     if (!mongoose.isValidObjectId(id)) {
+          return res.json({
+               status: 404,
+               message: 'Invalid stock id',
+               data: {}
+          });
+     }
+
      const stock = await Stock.findById(id).exec();
      const stockId = stock._id;
      const amount = req.body.amount;

@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const app = express();
 const cors = require('cors');
 const env = require('dotenv').config();
-const { eval } = require('./src/main.loop'); 
 if (process.env.MONGO_URI === undefined) {
      console.log("MONGO_URI not found");
      process.exit(1);
@@ -40,12 +39,6 @@ app.set('view engine', 'jade');
 
 
 app.use('/', root);
-app.use('/test', (req, res) => {
-     eval().then((data) => {
-          res.json(data);
-     });
-}
-);
 
 app.use(function (req, res, next) {
      console.log("404", req.url);
