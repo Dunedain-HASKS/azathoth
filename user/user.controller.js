@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
             res.json({
                 status: 200,
                 message: '',
-                data: { ...(user._doc) , holdings, funds }
+                data: { ...(user._doc), holdings, funds }
             })
         } else {
             res.json({
