@@ -3,10 +3,7 @@
 const router = require('express').Router()
 const Company = require('./companies.schema')
 const News = require('../news/news.schema')
-
-const func = () => {
-    console.log(News.find({}))
-}
+const mongoose = require('mongoose')
 
 router.get("/", async (req, res) => {
     try {
