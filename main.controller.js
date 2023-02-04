@@ -20,7 +20,7 @@ router.use('/schemes', schemesRouter);
 
 module.exports = router;
 
-router.use('/', (req, res) => {
+router.get('/evaluate', (req, res) => {
      mainloop.evaluate();
      res.json({
           status: 200,
