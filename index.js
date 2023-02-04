@@ -13,9 +13,7 @@ if (process.env.MONGO_URI === undefined) {
      process.exit(1);
 }
 
-//enable cors
-
-app.user(cors());
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
