@@ -36,7 +36,11 @@ const updateStockPrice = async () => {
                          newNetWorth += (newPrice - prevPrice) * amount / prevPrice;
                          pair.set('amount', (newPrice / prevPrice) * amount);
                     }
-                    User.findByIdAndUpdate(user._id, { $set: { portfolio: user.portfolio }, $push: { newNetWorth } }, { new: true }).exec();
+                    const nwpair = {
+                         date: new Date(),
+                         value: newNetWorth
+                    }
+                    User.findByIdAndUpdate(user._id, { $set: { portfolio: user.portfolio }, $push: { net_worth: nwpair } }, { new: true }).exec();
                });
           });
           Stock.findByIdAndUpdate(stock._id, { $set: { historic_data: stock.historic_data } }, { new: true }).exec();
