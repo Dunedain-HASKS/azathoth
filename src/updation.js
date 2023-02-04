@@ -12,7 +12,6 @@ const updateStockPrice = async () => {
           const last = Math.round(historic_data[historic_data.length - 1].get('date') / 1000);
           const prevPrice = (historic_data[historic_data.length - 1].get('price')).close;
           const ticker = stock.company.ticker;
-          console.log(ticker);
           const res = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${ticker}&resolution=1&token=${api_keys[api_index]}&from=${last}&to=${now}`);
           const data = await res.json();
           for (let j = 0; j < data.c.length; j++) {
@@ -25,7 +24,6 @@ const updateStockPrice = async () => {
                };
                historic_data.push({ date: date, price: price });
           };
-          console.log(historic_data);
 
           const users = await User.find({}).exec();
           users.forEach(async (user) => {
@@ -38,7 +36,6 @@ const updateStockPrice = async () => {
                          newNetWorth += (newPrice - prevPrice) * amount / prevPrice;
                          pair.set('amount', (newPrice / prevPrice) * amount);
                     }
-                    console.log(user);
                     User.findByIdAndUpdate(user._id, { $set: { portfolio: user.portfolio }, $push: { newNetWorth } }, { new: true }).exec();
                });
           });

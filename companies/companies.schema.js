@@ -24,13 +24,13 @@ const CompanySchema = new Schema({
           type: Schema.Types.ObjectId,
           ref: "News"
      }],
-     financials: [{
+     financials: {
           type: Map,
           of: {
                key: String,
                value: String
           }
-     }]
+     }
 });
 
 module.exports = mongoose.model("Company", CompanySchema);
