@@ -68,7 +68,7 @@ router.post("/", async (req, res) => {
         res.json({
             status: 200,
             message: '',
-            data: data
+            data: userSave
         })
     } catch (err) {
         res.json({
