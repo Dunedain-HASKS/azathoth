@@ -24,6 +24,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+     const id = req.params.id;
      if (!mongoose.isValidObjectId(id)) {
           return res.json({
                status: 404,
