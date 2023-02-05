@@ -37,7 +37,7 @@ eval = async () => {
 
 
 
-     // updateStockPrice();
+     updateStockPrice();
 };
 
 module.exports = { evaluate: eval };
